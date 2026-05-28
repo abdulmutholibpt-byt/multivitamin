@@ -1,0 +1,238 @@
+
+<h2 class="sr-only">Dashboard Vitamin Mingguan oleh Abdul — jadwal vitamin harian beserta manfaat untuk tubuh</h2>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.wrap { background: #e8e8e8; border-radius: var(--border-radius-lg); padding: 1.5rem; }
+.days-nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 1rem 0; }
+.day-btn {
+  padding: 8px 14px; border-radius: var(--border-radius-md);
+  border: 0.5px solid #c8c8c8;
+  background: #f2f2f2;
+  cursor: pointer; font-size: 13px; font-weight: 500;
+  color: #444441; transition: all 0.15s;
+}
+.day-btn:hover { border-color: #aaa; color: #2C2C2A; }
+.day-btn.active { background: #1D9E75; border-color: #1D9E75; color: #fff; }
+.day-badge {
+  display: inline-block; font-size: 11px; background: #E1F5EE;
+  color: #0F6E56; padding: 2px 8px; border-radius: 20px; margin-bottom: 12px;
+  font-weight: 500;
+}
+.section-title { font-size: 18px; font-weight: 500; color: #2C2C2A; margin-bottom: 4px; }
+.section-sub { font-size: 13px; color: #5F5E5A; margin-bottom: 1rem; }
+.vitamins-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+.vitamin-card {
+  background: #f8f8f8;
+  border: 0.5px solid #ccc;
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  cursor: pointer; transition: border-color 0.15s;
+}
+.vitamin-card:hover { border-color: #aaa; }
+.vitamin-card.selected { border: 1.5px solid #1D9E75; background: #fff; }
+.vit-icon { font-size: 28px; margin-bottom: 8px; }
+.vit-name { font-size: 15px; font-weight: 500; color: #2C2C2A; }
+.vit-type { font-size: 12px; color: #5F5E5A; margin-top: 2px; }
+.vit-dose { font-size: 12px; color: #0F6E56; font-weight: 500; margin-top: 6px; }
+.detail-panel {
+  background: #f2f2f2;
+  border-radius: var(--border-radius-lg);
+  border: 0.5px solid #ccc;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.detail-icon { font-size: 36px; }
+.detail-vname { font-size: 18px; font-weight: 500; color: #2C2C2A; }
+.detail-cat { font-size: 13px; color: #5F5E5A; }
+.benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 12px; }
+.benefit-item {
+  background: #fff;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid #ccc;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.benefit-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+.benefit-label { color: #2C2C2A; font-weight: 500; }
+.benefit-desc { color: #5F5E5A; font-size: 12px; margin-top: 2px; line-height: 1.4; }
+.sources-section { margin-top: 12px; }
+.sources-label { font-size: 12px; color: #5F5E5A; margin-bottom: 6px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+.sources-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.source-tag { background: #E1F5EE; color: #085041; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 500; }
+.tip-box {
+  background: #fff;
+  border-left: 3px solid #1D9E75;
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  border-top: 0.5px solid #ccc;
+  border-right: 0.5px solid #ccc;
+  border-bottom: 0.5px solid #ccc;
+  padding: 10px 14px; margin-top: 12px;
+  font-size: 13px; color: #5F5E5A; line-height: 1.5;
+}
+.tip-box strong { color: #2C2C2A; }
+.weekly-progress { margin-bottom: 1.5rem; }
+.prog-title { font-size: 14px; color: #5F5E5A; margin-bottom: 8px; font-weight: 500; }
+.prog-days { display: flex; gap: 6px; }
+.prog-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 500; cursor: pointer;
+  border: 0.5px solid #ccc;
+  color: #5F5E5A; background: #f2f2f2;
+  transition: all 0.15s;
+}
+.prog-dot.done { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+.prog-dot.today { border: 1.5px solid #1D9E75; color: #0F6E56; }
+.chart-bar-wrap { margin-top: 1rem; }
+.chart-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.chart-label { font-size: 12px; color: #5F5E5A; width: 60px; text-align: right; }
+.chart-track { flex: 1; height: 8px; background: #ddd; border-radius: 4px; overflow: hidden; }
+.chart-fill { height: 100%; border-radius: 4px; background: #1D9E75; transition: width 0.4s; }
+.chart-pct { font-size: 12px; color: #0F6E56; font-weight: 500; width: 36px; }
+.footer-credit {
+  text-align: center; padding-top: 1rem;
+  font-size: 12px; color: #888780;
+  border-top: 0.5px solid #ccc; margin-top: 0.5rem;
+}
+</style>
+
+<div class="wrap">
+  <div style="padding-bottom:1rem;border-bottom:0.5px solid #ccc;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <div>
+      <h1 style="font-size:22px;font-weight:500;color:#2C2C2A"><i class="ti ti-leaf" aria-hidden="true" style="color:#1D9E75;margin-right:6px"></i>Dashboard Vitamin Mingguan</h1>
+      <p style="font-size:13px;color:#5F5E5A;margin-top:4px">Jadwal vitamin harian — pilih hari untuk melihat rekomendasi & manfaat</p>
+    </div>
+    <div style="background:#fff;border:0.5px solid #ccc;border-radius:var(--border-radius-md);padding:6px 14px;font-size:13px;color:#5F5E5A">
+      <i class="ti ti-user" aria-hidden="true" style="margin-right:4px;color:#1D9E75"></i>by <strong style="color:#2C2C2A">Abdul</strong>
+    </div>
+  </div>
+
+  <div id="dayNav" class="days-nav"></div>
+  <div id="mainContent"></div>
+
+  <div class="footer-credit">
+    <i class="ti ti-heart" aria-hidden="true" style="color:#1D9E75;margin-right:4px"></i>Dibuat dengan penuh semangat oleh <strong style="color:#444441">Abdul</strong>
+  </div>
+</div>
+
+<script>
+const days = [
+  { id:0, label:"Sen", full:"Senin", theme:"Kesehatan Mata & Imunitas", vitamins:[
+    { name:"Vitamin A", type:"Larut lemak", dose:"700–900 mcg/hari", icon:"🥕", benefits:[{icon:"👁",label:"Kesehatan mata",desc:"Mencegah rabun senja & menjaga penglihatan malam"},{icon:"🛡",label:"Imunitas",desc:"Memperkuat sistem imun tubuh"},{icon:"✨",label:"Kulit sehat",desc:"Menjaga kelembapan & regenerasi sel kulit"}], sources:["Wortel","Ubi jalar","Bayam","Hati ayam","Telur"], tip:"Konsumsi bersama makanan berlemak agar penyerapan Vitamin A optimal karena bersifat larut lemak." },
+    { name:"Vitamin C", type:"Larut air", dose:"75–90 mg/hari", icon:"🍊", benefits:[{icon:"🛡",label:"Antioksidan",desc:"Melawan radikal bebas penyebab penuaan"},{icon:"🩹",label:"Penyembuhan",desc:"Mempercepat regenerasi jaringan & luka"},{icon:"💪",label:"Imunitas",desc:"Meningkatkan produksi sel darah putih"}], sources:["Jeruk","Jambu biji","Paprika","Brokoli","Stroberi"], tip:"Vitamin C mudah rusak oleh panas. Konsumsi buah segar atau sayuran yang tidak terlalu matang." }
+  ]},
+  { id:1, label:"Sel", full:"Selasa", theme:"Kesehatan Tulang & Otot", vitamins:[
+    { name:"Vitamin D", type:"Larut lemak", dose:"600–800 IU/hari", icon:"☀️", benefits:[{icon:"🦴",label:"Tulang kuat",desc:"Membantu penyerapan kalsium & fosfor"},{icon:"💪",label:"Kekuatan otot",desc:"Mendukung fungsi otot yang optimal"},{icon:"😊",label:"Mood & mental",desc:"Mengatur produksi serotonin alami"}], sources:["Sinar matahari pagi","Ikan salmon","Tuna","Susu fortifikasi","Kuning telur"], tip:"Berjemur 10–15 menit di bawah sinar matahari pagi (sebelum jam 9) adalah cara terbaik mendapat Vitamin D alami." },
+    { name:"Vitamin K", type:"Larut lemak", dose:"90–120 mcg/hari", icon:"🥦", benefits:[{icon:"🦴",label:"Kepadatan tulang",desc:"Membantu mineralisasi tulang"},{icon:"🩸",label:"Pembekuan darah",desc:"Berperan penting dalam koagulasi"},{icon:"❤️",label:"Jantung sehat",desc:"Mencegah kalsifikasi arteri"}], sources:["Bayam","Brokoli","Kubis","Alpukat","Kacang kedelai"], tip:"Kombinasikan Vitamin D dan K untuk menjaga kesehatan tulang dan pembuluh darah secara bersamaan." }
+  ]},
+  { id:2, label:"Rab", full:"Rabu", theme:"Energi & Metabolisme", vitamins:[
+    { name:"Vitamin B12", type:"Larut air", dose:"2.4 mcg/hari", icon:"🥩", benefits:[{icon:"⚡",label:"Energi",desc:"Mengubah makanan menjadi energi yang siap pakai"},{icon:"🧠",label:"Fungsi otak",desc:"Mendukung saraf dan fungsi kognitif"},{icon:"🩸",label:"Sel darah merah",desc:"Mencegah anemia megaloblastik"}], sources:["Daging sapi","Ikan","Susu","Keju","Telur"], tip:"Vegetarian dan vegan perlu suplemen B12 karena sumber utamanya berasal dari produk hewani." },
+    { name:"Vitamin B6", type:"Larut air", dose:"1.3–1.7 mg/hari", icon:"🌾", benefits:[{icon:"⚡",label:"Metabolisme",desc:"Membantu mengolah protein, lemak & karbohidrat"},{icon:"🧠",label:"Neurotransmitter",desc:"Mendukung produksi serotonin & dopamin"},{icon:"🛡",label:"Imunitas",desc:"Mendukung respons imun yang sehat"}], sources:["Pisang","Kentang","Biji-bijian","Ayam","Ikan tuna"], tip:"Pisang adalah sumber B6 praktis yang bisa dikonsumsi kapan saja sebagai camilan sehat." }
+  ]},
+  { id:3, label:"Kam", full:"Kamis", theme:"Jantung & Pembuluh Darah", vitamins:[
+    { name:"Vitamin E", type:"Larut lemak", dose:"15 mg/hari", icon:"🌻", benefits:[{icon:"❤️",label:"Jantung sehat",desc:"Mencegah oksidasi kolesterol LDL"},{icon:"✨",label:"Anti-penuaan",desc:"Antioksidan kuat untuk sel tubuh"},{icon:"🧴",label:"Kulit & rambut",desc:"Melembapkan dan melindungi kulit"}], sources:["Biji bunga matahari","Almond","Minyak zaitun","Bayam","Alpukat"], tip:"Almond segenggam per hari sudah cukup untuk memenuhi kebutuhan Vitamin E harian Anda." },
+    { name:"Asam Folat (B9)", type:"Larut air", dose:"400 mcg/hari", icon:"🥬", benefits:[{icon:"🧬",label:"DNA & sel",desc:"Mendukung pembentukan dan perbaikan DNA"},{icon:"❤️",label:"Jantung",desc:"Menurunkan kadar homosistein darah"},{icon:"🤰",label:"Kehamilan",desc:"Sangat penting untuk perkembangan janin"}], sources:["Bayam","Lentil","Asparagus","Kacang polong","Hati"], tip:"Ibu hamil sangat membutuhkan asam folat sejak sebelum kehamilan untuk mencegah cacat tabung saraf." }
+  ]},
+  { id:4, label:"Jum", full:"Jumat", theme:"Kulit, Rambut & Kecantikan", vitamins:[
+    { name:"Biotin (B7)", type:"Larut air", dose:"30 mcg/hari", icon:"🥚", benefits:[{icon:"💇",label:"Rambut kuat",desc:"Mencegah kerontokan & memperkuat folikel rambut"},{icon:"💅",label:"Kuku sehat",desc:"Memperkuat kuku yang rapuh"},{icon:"🧴",label:"Kulit bercahaya",desc:"Menjaga elastisitas dan kelembapan kulit"}], sources:["Telur (kuning)","Kacang tanah","Salmon","Ubi jalar","Kacang almond"], tip:"Biotin sering disebut 'vitamin kecantikan'. Konsumsi telur rebus setiap pagi untuk manfaat optimal." },
+    { name:"Vitamin C", type:"Larut air", dose:"75–90 mg/hari", icon:"🍋", benefits:[{icon:"✨",label:"Kolagen",desc:"Merangsang produksi kolagen untuk kulit kencang"},{icon:"🌟",label:"Mencerahkan",desc:"Mengurangi hiperpigmentasi & noda hitam"},{icon:"🛡",label:"UV protection",desc:"Melindungi dari kerusakan akibat sinar UV"}], sources:["Lemon","Jambu biji","Jeruk nipis","Kiwi","Pepaya"], tip:"Vitamin C topikal (serum) dan oral bekerja sinergis untuk kecantikan kulit yang maksimal." }
+  ]},
+  { id:5, label:"Sab", full:"Sabtu", theme:"Otak & Saraf", vitamins:[
+    { name:"Omega-3 (DHA)", type:"Asam lemak esensial", dose:"250–500 mg/hari", icon:"🐟", benefits:[{icon:"🧠",label:"Kecerdasan otak",desc:"Meningkatkan fungsi kognitif & konsentrasi"},{icon:"😊",label:"Kesehatan mental",desc:"Mengurangi risiko depresi & kecemasan"},{icon:"👁",label:"Retina mata",desc:"DHA adalah komponen utama retina"}], sources:["Ikan salmon","Ikan makarel","Sarden","Biji chia","Kenari"], tip:"Konsumsi ikan berlemak minimal 2x seminggu untuk kebutuhan omega-3 yang optimal." },
+    { name:"Vitamin B1 (Tiamin)", type:"Larut air", dose:"1.1–1.2 mg/hari", icon:"🌾", benefits:[{icon:"⚡",label:"Energi saraf",desc:"Mendukung transmisi sinyal saraf"},{icon:"💭",label:"Memori",desc:"Berperan dalam pembentukan memori"},{icon:"😊",label:"Mood",desc:"Membantu menjaga suasana hati yang stabil"}], sources:["Beras merah","Oatmeal","Kacang-kacangan","Daging babi","Biji bunga matahari"], tip:"Hindari memasak terlalu lama karena Vitamin B1 mudah rusak oleh panas berlebihan." }
+  ]},
+  { id:6, label:"Min", full:"Minggu", theme:"Pemulihan & Relaksasi", vitamins:[
+    { name:"Magnesium", type:"Mineral esensial", dose:"310–420 mg/hari", icon:"🍫", benefits:[{icon:"😴",label:"Tidur berkualitas",desc:"Membantu relaksasi otot & meningkatkan kualitas tidur"},{icon:"💆",label:"Relaksasi",desc:"Mengurangi stres dan ketegangan"},{icon:"💪",label:"Pemulihan otot",desc:"Mencegah kram dan nyeri otot pasca aktivitas"}], sources:["Coklat hitam","Bayam","Alpukat","Pisang","Almond"], tip:"Konsumsi magnesium di malam hari untuk mendukung tidur yang lebih nyenyak dan pemulihan tubuh." },
+    { name:"Zinc", type:"Mineral esensial", dose:"8–11 mg/hari", icon:"🦪", benefits:[{icon:"🛡",label:"Imunitas",desc:"Memperkuat respons imun tubuh"},{icon:"🩹",label:"Penyembuhan",desc:"Mempercepat penyembuhan luka dan regenerasi sel"},{icon:"👁",label:"Indera",desc:"Mendukung indera perasa dan penciuman"}], sources:["Tiram","Daging merah","Biji labu","Kacang mede","Tempe"], tip:"Zinc dan Vitamin C bekerja bersama memperkuat sistem imun. Kombinasi ideal saat tubuh terasa lelah." }
+  ]}
+];
+
+let activeDay = 0, selectedVit = 0;
+const done = new Set();
+
+function renderDayNav() {
+  document.getElementById('dayNav').innerHTML = days.map(d =>
+    `<button class="day-btn ${d.id===activeDay?'active':''}" onclick="setDay(${d.id})">${d.full}</button>`
+  ).join('');
+}
+
+function getBarData(day) {
+  const cats = {};
+  day.vitamins.forEach(v => v.benefits.forEach(b => { cats[b.label]=(cats[b.label]||0)+1; }));
+  const total = Object.values(cats).reduce((a,b)=>a+b,0);
+  return Object.entries(cats).map(([label,n])=>({label,pct:Math.round(n/total*100)})).sort((a,b)=>b.pct-a.pct).slice(0,5);
+}
+
+function renderMain() {
+  const day = days[activeDay];
+  const vit = day.vitamins[selectedVit];
+  document.getElementById('mainContent').innerHTML = `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+      <div>
+        <span class="day-badge"><i class="ti ti-calendar" aria-hidden="true" style="font-size:12px;margin-right:4px"></i>${day.full}</span>
+        <div class="section-title">Fokus: ${day.theme}</div>
+        <div class="section-sub">Pilih vitamin di bawah untuk melihat detail manfaat</div>
+      </div>
+      <button onclick="toggleDone(${activeDay})" style="padding:8px 16px;border-radius:var(--border-radius-md);border:0.5px solid ${done.has(activeDay)?'#1D9E75':'#ccc'};background:${done.has(activeDay)?'#E1F5EE':'#f8f8f8'};color:${done.has(activeDay)?'#085041':'#5F5E5A'};font-size:13px;cursor:pointer;">
+        <i class="ti ${done.has(activeDay)?'ti-check':'ti-circle'}" aria-hidden="true" style="margin-right:4px"></i>${done.has(activeDay)?'Sudah diminum ✓':'Tandai sudah diminum'}
+      </button>
+    </div>
+    <div class="vitamins-grid">
+      ${day.vitamins.map((v,i)=>`
+        <div class="vitamin-card ${i===selectedVit?'selected':''}" onclick="selectVit(${i})">
+          <div class="vit-icon">${v.icon}</div>
+          <div class="vit-name">${v.name}</div>
+          <div class="vit-type">${v.type}</div>
+          <div class="vit-dose"><i class="ti ti-pill" aria-hidden="true" style="font-size:12px;margin-right:3px"></i>${v.dose}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="detail-panel">
+      <div class="detail-header">
+        <div class="detail-icon">${vit.icon}</div>
+        <div>
+          <div class="detail-vname">${vit.name}</div>
+          <div class="detail-cat">${vit.type} • ${vit.dose}</div>
+        </div>
+      </div>
+      <div class="benefits-grid">
+        ${vit.benefits.map(b=>`
+          <div class="benefit-item">
+            <span class="benefit-icon">${b.icon}</span>
+            <div class="benefit-label">${b.label}</div>
+            <div class="benefit-desc">${b.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="sources-section" style="margin-top:14px">
+        <div class="sources-label"><i class="ti ti-salad" aria-hidden="true" style="font-size:12px;margin-right:4px"></i>Sumber alami</div>
+        <div class="sources-list">${vit.sources.map(s=>`<span class="source-tag">${s}</span>`).join('')}</div>
+      </div>
+      <div class="tip-box"><strong><i class="ti ti-bulb" aria-hidden="true" style="font-size:13px;margin-right:4px;color:#1D9E75"></i>Tips:</strong> ${vit.tip}</div>
+    </div>
+    <div class="weekly-progress">
+      <div class="prog-title"><i class="ti ti-progress" aria-hidden="true" style="font-size:14px;margin-right:4px"></i>Progress minggu ini (${done.size}/7 hari)</div>
+      <div class="prog-days">
+        ${days.map(d=>`<div class="prog-dot ${done.has(d.id)?'done':d.id===activeDay?'today':''}" onclick="setDay(${d.id})" title="${d.full}">${d.label}</div>`).join('')}
+      </div>
+    </div>
+    <div class="chart-bar-wrap">
+      <div style="font-size:13px;color:#5F5E5A;margin-bottom:10px;font-weight:500"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:14px;margin-right:4px"></i>Kategori manfaat vitamin hari ini</div>
+      ${getBarData(day).map(b=>`
+        <div class="chart-row">
+          <div class="chart-label">${b.label}</div>
+          <div class="chart-track"><div class="chart-fill" style="width:${b.pct}%"></div></div>
+          <div class="chart-pct">${b.pct}%</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function setDay(id) { activeDay=id; selectedVit=0; renderDayNav(); renderMain(); }
+function selectVit(i) { selectedVit=i; renderMain(); }
+function toggleDone(id) { done.has(id)?done.delete(id):done.add(id); renderMain(); }
+
+renderDayNav(); renderMain();
+</script>
